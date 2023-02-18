@@ -129,19 +129,6 @@ class AssistantMethods {
     });
   }
 
-  // static void getCurrentOnlineUserInfo() async {
-  //   currentFirebaseUser = fAuth.currentUser;
-  //   String userId = currentFirebaseUser!.uid;
-
-  //   DatabaseReference reference =
-  //       FirebaseDatabase.instance.ref().child("users").child(userId);
-
-  //   reference.once().then((dataSnapshot) {
-  //     if (dataSnapshot.snapshot.value != null) {
-  //       userCurrentInfo = UserModel.fromSnapshot(dataSnapshot.snapshot);
-  //     }
-  //   });
-  // }
 
   static double createRandomNumber(int num) {
     var random = Random();
@@ -184,3 +171,4 @@ class AssistantMethods {
     );
   }
 }
+

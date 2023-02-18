@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
@@ -8,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+
 import 'package:provider/provider.dart';
 import 'package:ridee/AllScreens/searchScreen.dart';
 import 'package:ridee/Globals/Global.dart';
@@ -47,10 +48,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   double rideDetailContainerHeight = 0;
   double requestHeight = 0;
   double searchContainerHeight = 200;
-  DatabaseReference? referenceRideRequest;
 
   String driverRideStatus = "Driver is Coming";
-  StreamSubscription<DatabaseEvent>? tripRideRequestInfoStreamSubscription;
   String userRideRequestStatus = "";
 
   bool searchScreen = true;
@@ -68,13 +67,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void cancelRideRequest() {
-    referenceRideRequest!.remove();
+    // TODO: call cancel
+    // referenceRideRequest!.remove();
     displaySearch();
   }
 
   void saveRideRequest() {
-    referenceRideRequest =
-        FirebaseDatabase.instance.ref().child("Ride_Request").push();
 
     var pickup =
         Provider.of<AppData>(context, listen: false).userPickUpLocation;
@@ -197,15 +195,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   sendNotificationToDriverNow(String chosenDriverId) {
-    //assign/SET rideRequestId to newRideStatus in
-    // Drivers Parent node for that specific choosen driver
-    // FirebaseDatabase.instance.ref()
-    //     .child("drivers")
-    //     .child(chosenDriverId)
-    //     .child("newRideStatus")
-    //     .set(referenceRideRequest!.key);
-
-    //automate the push notification service
     print("##notification send##");
     FirebaseDatabase.instance
         .ref()
@@ -472,53 +461,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
-
-                        // SizedBox(
-                        //   height: 16.0,
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Icon(Icons.home, color: Colors.teal),
-                        //     SizedBox(
-                        //       width: 20.0,
-                        //     ),
-                        //     Expanded(
-                        //       child: Column(
-                        //         children: [
-                        //           Container(
-                        //             child: Align(
-                        //               alignment: Alignment.center,
-                        //               child: Expanded(
-                        //                 child: Text(
-                        //                   Provider.of<AppData>(context)
-                        //                               .userPickUpLocation !=
-                        //                           null
-                        //                       ? (Provider.of<AppData>(context)
-                        //                           .userPickUpLocation!
-                        //                           .placeName!)
-                        //                       : "Add Current Location",
-                        //                   overflow: TextOverflow.ellipsis,
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //           SizedBox(
-                        //             width: 10.0,
-                        //           ),
-                        //           Align(
-                        //             alignment: Alignment.center,
-                        //             child: Text(
-                        //               "Your Current Address.",
-                        //               style: TextStyle(
-                        //                   color: Colors.grey[500],
-                        //                   fontSize: 12.0),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                   ),

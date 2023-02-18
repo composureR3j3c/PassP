@@ -86,14 +86,7 @@ class _PredictionTileState extends State<PredictionTile> {
   }
 
   void setDropOff(PlacePredictions placePredictions, BuildContext context) {
-    // showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) => AlertDialog(
-    //           content: Container(
-    //             child: Text("Setting DropOff, Please wait..."),
-    //           ),
-    //         ));
-
+   
     Address address = Address();
     address.latitude = placePredictions.lat as double?;
     address.longitude = placePredictions.lon as double?;
