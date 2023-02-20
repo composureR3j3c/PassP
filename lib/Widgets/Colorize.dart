@@ -1,12 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
-class Colorize  extends StatelessWidget {
-  const Colorize ({Key? key}) : super(key: key);
-  static
-  const colorizeColors = [
+class Colorize extends StatelessWidget {
+  const Colorize({Key? key}) : super(key: key);
+  static const colorizeColors = [
     // Colors.purple,
-    Colors.teal,
+    Colors.red,
     Colors.blue,
     Colors.yellow,
     Colors.red,
@@ -29,23 +28,20 @@ class Colorize  extends StatelessWidget {
             'Requesting a Ride....',
             textStyle: colorizeTextStyle,
             colors: colorizeColors,
-            textAlign:TextAlign.center,
+            textAlign: TextAlign.center,
           ),
           ColorizeAnimatedText(
             'Processing please wait....',
             textStyle: colorizeTextStyle,
             colors: colorizeColors,
-
-            textAlign:TextAlign.center,
+            textAlign: TextAlign.center,
           ),
           ColorizeAnimatedText(
             'Finding a driver....',
             textStyle: colorizeTextStyle,
             colors: colorizeColors,
-
-            textAlign:TextAlign.center,
+            textAlign: TextAlign.center,
           ),
-
         ],
         isRepeatingAnimation: true,
         onTap: () {

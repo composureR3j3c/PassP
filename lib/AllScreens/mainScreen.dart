@@ -8,7 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
 import 'package:provider/provider.dart';
 import 'package:ridee/AllScreens/searchScreen.dart';
 import 'package:ridee/Globals/Global.dart';
@@ -73,7 +72,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void saveRideRequest() {
-
     var pickup =
         Provider.of<AppData>(context, listen: false).userPickUpLocation;
     var dropOff = Provider.of<AppData>(context, listen: false).dropOffLocation;
@@ -99,12 +97,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       "dropoff_address": dropOff?.placeName
     };
 
-    referenceRideRequest!.set(rideInfoMap);
-    tripRideRequestInfoStreamSubscription =
-        referenceRideRequest!.onValue.listen((eventSnap) {
-      if (eventSnap.snapshot.value == null) {
-        return;
-      }
+    // referenceRideRequest!.set(rideInfoMap);
+    ((eventSnap) {
+      // if (eventSnap.snapshot.value == null) {
+      // return;
+      // }
 
       if ((eventSnap.snapshot.value as Map)["car_details"] != null) {
         setState(() {
@@ -154,35 +151,35 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       }
     });
 
-    sendNotificationToDriverNow("7j11klugrzgvwrAHyvJp38woWIf1");
+    // sendNotificationToDriverNow("7j11klugrzgvwrAHyvJp38woWIf1");
 
-    FirebaseDatabase.instance
-        .ref()
-        .child("drivers")
-        .child("7j11klugrzgvwrAHyvJp38woWIf1")
-        .child("newRide")
-        .onValue
-        .listen((eventSnapshot) {
-      //1. driver has cancel the rideRequest :: Push Notification
-      // (newRideStatus = idle)
-      if (eventSnapshot.snapshot.value == "idle") {
-        Fluttertoast.showToast(
-            msg:
-                "The driver has cancelled your request. please request again.");
+    // FirebaseDatabase.instance
+    //     .ref()
+    //     .child("drivers")
+    //     .child("7j11klugrzgvwrAHyvJp38woWIf1")
+    //     .child("newRide")
+    //     .onValue
+    //     .listen((eventSnapshot) {
+    //   //1. driver has cancel the rideRequest :: Push Notification
+    //   // (newRideStatus = idle)
+    //   if (eventSnapshot.snapshot.value == "idle") {
+    //     Fluttertoast.showToast(
+    //         msg:
+    //             "The driver has cancelled your request. please request again.");
 
-        //   Future.delayed(const Duration(milliseconds: 3000), () {
-        //     Fluttertoast.showToast(msg: "Please Restart App Now.");
-        Navigator.pop(context);
-        //   });
-      }
+    //     //   Future.delayed(const Duration(milliseconds: 3000), () {
+    //     //     Fluttertoast.showToast(msg: "Please Restart App Now.");
+    //     Navigator.pop(context);
+    //     //   });
+    //   }
 
-      //2. driver has accept the rideRequest :: Push Notification
-      // (newRideStatus = accepted)
-      if (eventSnapshot.snapshot.value == "accepted") {
-        //design and display ui for displaying assigned driver information
-        // showUIForAssignedDriverInfo();
-      }
-    });
+    //   //2. driver has accept the rideRequest :: Push Notification
+    //   // (newRideStatus = accepted)
+    //   if (eventSnapshot.snapshot.value == "accepted") {
+    //     //design and display ui for displaying assigned driver information
+    //     // showUIForAssignedDriverInfo();
+    //   }
+    // });
   }
 
   showUIForAssignedDriverInfo() {
@@ -196,32 +193,32 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   sendNotificationToDriverNow(String chosenDriverId) {
     print("##notification send##");
-    FirebaseDatabase.instance
-        .ref()
-        .child("drivers")
-        .child(chosenDriverId)
-        .child("token")
-        .once()
-        .then((snap) {
-      if (snap.snapshot.value != null) {
-        String deviceRegistrationToken = snap.snapshot.value.toString();
+    // FirebaseDatabase.instance
+    //     .ref()
+    //     .child("drivers")
+    //     .child(chosenDriverId)
+    //     .child("token")
+    //     .once()
+    //     .then((snap) {
+    //   if (snap.snapshot.value != null) {
+    //     String deviceRegistrationToken = snap.snapshot.value.toString();
 
-        //send Notification Now
-        AssistantMethods.sendNotificationToDriverNow(
-          deviceRegistrationToken,
-          referenceRideRequest!.key.toString(),
-          context,
-        );
-        print("############notification send##");
-        print(referenceRideRequest!.key.toString());
-        print("#############notification send##");
+    //     //send Notification Now
+    //     // AssistantMethods.sendNotificationToDriverNow(
+    //     //   deviceRegistrationToken,
+    //     //   referenceRideRequest!.key.toString(),
+    //     //   context,
+    //     // );
+    //     print("############notification send##");
+    //     // print(referenceRideRequest!.key.toString());
+    //     print("#############notification send##");
 
-        Fluttertoast.showToast(msg: "Notification sent Successfully.");
-      } else {
-        Fluttertoast.showToast(msg: "Please choose another driver.");
-        return;
-      }
-    });
+    //     Fluttertoast.showToast(msg: "Notification sent Successfully.");
+    //   } else {
+    //     Fluttertoast.showToast(msg: "Please choose another driver.");
+    //     return;
+    //   }
+    // });
   }
 
   void displayRideDetail() async {
@@ -339,7 +336,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       Fluttertoast.showToast(msg: "New location being fetched");
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
+                      primary: Colors.redAccent,
                       // backgroundColor: Colors.green,
                     ),
                     child: Padding(
@@ -375,7 +372,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   width: double.infinity,
                   height: searchContainerHeight,
                   decoration: BoxDecoration(
-                      color: Colors.black87,
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(18.0),
                           topRight: Radius.circular(18.0)),
@@ -424,7 +421,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Colors.teal,
+                                  color: Colors.redAccent,
                                   borderRadius: BorderRadius.circular(5.0),
                                   boxShadow: [
                                     BoxShadow(
@@ -899,7 +896,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             //                           spreadRadius: 0.8,
                             //                           offset: Offset(1, 1),
                             //                         )
-                            //                       ]),(context).teal,
+                            //                       ]),(context).red,
                             onPressed: () {
                               setState(() {
                                 displayRequest();
@@ -1002,7 +999,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     },
                     child: CircleAvatar(
                         radius: 25.0,
-                        backgroundColor: Colors.teal[300],
+                        backgroundColor: Colors.red[300],
                         child: Icon(
                           Icons.close,
                           size: 26.0,

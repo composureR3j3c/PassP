@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-const List<String> list = <String>['Cash', 'Telebirr', 'Wallet', 'Bank Transfer'];
+const List<String> list = <String>[
+  'Cash',
+  'Telebirr',
+  'Wallet',
+  'Bank Transfer'
+];
 
 class DropdownButtonCash extends StatefulWidget {
   const DropdownButtonCash({Key? key}) : super(key: key);
@@ -17,7 +22,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonCash> {
       value: dropdownValue,
       icon: const Icon(Icons.arrow_downward),
       elevation: 16,
-      style: const TextStyle(color: Colors.teal),
+      style: const TextStyle(color: Colors.red),
       underline: Container(
         height: 2,
         color: Colors.black54,

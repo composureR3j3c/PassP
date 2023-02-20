@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../Globals/Global.dart';
 import '../Widgets/ProgressDialog.dart';
@@ -74,109 +75,132 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Image.asset("images/logo.png"),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Login as a User",
-                style: TextStyle(
-                  fontSize: 26,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextField(
-                controller: emailTextEditingController,
-                keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(color: Colors.grey),
-                decoration: const InputDecoration(
-                  labelText: "Email",
-                  hintText: "Email",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+        backgroundColor: Colors.white,
+        body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          // decoration: BoxDecoration(
+          // image: DecorationImage(
+          //     image: AssetImage("images/USER-APP-LOGIN.jpg"),
+          //     fit: BoxFit.fill)),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+                  Padding(
+                      padding: const EdgeInsets.all(80.0),
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            "images/logo.png",
+                            // opacity: const AlwaysStoppedAnimation(.6)
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "One Taxi",
+                            style: GoogleFonts.pacifico(
+                                textStyle: TextStyle(
+                              color: Colors.red,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w900,
+                            )),
+                          ),
+                        ],
+                      )),
+
+                  // const Text(
+                  // "Login as a User",
+                  // style: TextStyle(
+                  //   fontSize: 26,
+                  //   color: Colors.black87,
+                  //   fontWeight: FontWeight.bold,
+                  // ),
+                  // ),
+                  TextField(
+                    controller: emailTextEditingController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: Colors.black54),
+                    decoration: const InputDecoration(
+                      labelText: "Email",
+                      hintText: "Email",
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black54),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black54),
+                      ),
+                      hintStyle: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 10,
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
+                  TextField(
+                    controller: passwordTextEditingController,
+                    keyboardType: TextInputType.text,
+                    obscureText: true,
+                    style: const TextStyle(color: Colors.black54),
+                    decoration: const InputDecoration(
+                      labelText: "Password",
+                      hintText: "Password",
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black54),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black54),
+                      ),
+                      hintStyle: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 10,
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
-                  labelStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
+                  ElevatedButton(
+                    onPressed: () {
+                      validateForm();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent,
+                    ),
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    child: const Text(
+                      "Do not have an Account? SignUp Here",
+                      style: TextStyle(color: Colors.amber),
+                    ),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (c) => SignUpScreen()));
+                    },
+                  ),
+                ],
               ),
-              TextField(
-                controller: passwordTextEditingController,
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                style: const TextStyle(color: Colors.grey),
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  hintText: "Password",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
-                  ),
-                  labelStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  validateForm();
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.lightGreenAccent,
-                ),
-                child: const Text(
-                  "Login",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              TextButton(
-                child: const Text(
-                  "Do not have an Account? SignUp Here",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (c) => SignUpScreen()));
-                },
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
