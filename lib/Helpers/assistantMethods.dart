@@ -96,7 +96,7 @@ class AssistantMethods {
 
       directDetails.time = requestResponse["features"][0]["properties"]["time"];
       directDetails.e_points =
-          requestResponse["features"][0]["geometry"]["coordinates"];
+          requestResponse["features"][0]["geometry"]["coordinates"][0];
       print(directDetails.distance);
       return directDetails;
     } else {

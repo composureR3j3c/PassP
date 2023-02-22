@@ -371,7 +371,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                     MaterialPageRoute(
                                         builder: (context) => SearchScreen()));
                                 if (res == "obtainDirection") {
-                                  // await getPlaceDirections();
+                                  await getPlaceDirections();
                                   await drawPolyLineFromOriginToDestination();
                                   displayRideDetail();
                                 }
@@ -1189,7 +1189,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     var directionDetailsInfo =
         await AssistantMethods.obtainDirection(originLatLng, destinationLatLng);
 
-    Navigator.pop(context);
+    // Navigator.pop(context);
 
     print("These are points = ");
     print(directionDetailsInfo!.e_points);
@@ -1201,8 +1201,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     if (decodedPolyLinePointsResultList.isNotEmpty) {
       decodedPolyLinePointsResultList.forEach((pointLatLng) {
-        pLineCoOrdinatesList
-            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+        pLineCoOrdinatesList.add(LatLng(pointLatLng[1], pointLatLng[0]));
       });
     }
 
@@ -1218,7 +1217,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         endCap: Cap.roundCap,
         geodesic: true,
       );
-
+      print("polyline" + polyline.toString());
       polyLineSet.add(polyline);
     });
 
