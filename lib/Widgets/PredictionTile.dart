@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ridee/Globals/Global.dart';
 import 'package:ridee/Models/address.dart';
@@ -21,10 +22,11 @@ class _PredictionTileState extends State<PredictionTile> {
         setDropOff(widget.placePredictions, context);
       },
       child: Container(
+        padding: EdgeInsets.all(10.0),
         child: Column(
           children: [
             SizedBox(
-              width: 10.0,
+              width: 20.0,
             ),
             SizedBox(
               width: 14.0,
@@ -35,9 +37,9 @@ class _PredictionTileState extends State<PredictionTile> {
                   width: 15.0,
                 ),
                 Icon(
-                  Icons.add_location,
+                  Icons.add_location_alt_outlined,
                   color: Colors.red,
-                  size: 50,
+                  size: 20,
                 ),
                 SizedBox(
                   width: 20,
@@ -54,7 +56,11 @@ class _PredictionTileState extends State<PredictionTile> {
                         widget.placePredictions.mainText ?? "",
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 16.0, color: Colors.black),
+                        style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        )),
                       ),
                     ),
                     SizedBox(
@@ -66,7 +72,11 @@ class _PredictionTileState extends State<PredictionTile> {
                         widget.placePredictions.secondaryText ?? "",
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 13.0, color: Colors.black45),
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                          color: Colors.black45,
+                          fontSize: 13,
+                        )),
                       ),
                     ),
                     SizedBox(
@@ -86,7 +96,6 @@ class _PredictionTileState extends State<PredictionTile> {
   }
 
   void setDropOff(PlacePredictions placePredictions, BuildContext context) {
-   
     Address address = Address();
     address.latitude = placePredictions.lat as double?;
     address.longitude = placePredictions.lon as double?;

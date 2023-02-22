@@ -1,10 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ridee/AllScreens/LoginScreen.dart';
 import 'package:ridee/Globals/Global.dart';
 import 'package:ridee/Helpers/sendMail.dart';
 
+import '../Helpers/assistantMethods.dart';
+
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({Key? key}) : super(key: key);
+  final String? name;
+  final String? email;
+
+  const DrawerWidget({Key? key, required this.name, required this.email})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +21,47 @@ class DrawerWidget extends StatelessWidget {
       child: Drawer(
         child: Column(
           children: [
-            AppBar(
-              title: Text('Hello Friend'),
-              //no back button
-              automaticallyImplyLeading: false,
+            Container(
+              height: 165,
+              color: Colors.white,
+              child: DrawerHeader(
+                decoration: const BoxDecoration(color: Colors.red),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.person,
+                      size: 80,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          name!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          email!,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
             Divider(),
             ListTile(
@@ -35,7 +79,7 @@ class DrawerWidget extends StatelessWidget {
                 // Navigator.pushReplacementNamed(context, OrdersScreen.routeName);
               },
             ),
-             Divider(),
+            Divider(),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Pre-Order'),

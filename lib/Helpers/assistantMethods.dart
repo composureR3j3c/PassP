@@ -95,6 +95,8 @@ class AssistantMethods {
       print("####distance####");
 
       directDetails.time = requestResponse["features"][0]["properties"]["time"];
+      directDetails.e_points =
+          requestResponse["features"][0]["geometry"]["coordinates"];
       print(directDetails.distance);
       return directDetails;
     } else {
@@ -128,7 +130,6 @@ class AssistantMethods {
       }
     });
   }
-
 
   static double createRandomNumber(int num) {
     var random = Random();
@@ -171,4 +172,3 @@ class AssistantMethods {
     );
   }
 }
-

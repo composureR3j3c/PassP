@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ridee/Helpers/callApi.dart';
 import 'package:ridee/Models/placePrediction.dart';
@@ -38,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
               boxShadow: [
                 BoxShadow(
                   color: Colors.red,
-                  blurRadius: 6.0,
+                  blurRadius: 2.0,
                   spreadRadius: 0.4,
                   offset: Offset(1, 1),
                 )
@@ -52,24 +53,34 @@ class _SearchScreenState extends State<SearchScreen> {
                   SizedBox(
                     height: 50.0,
                   ),
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        child: Icon(
-                          Icons.arrow_back,
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          bottomLeft: Radius.circular(15),
                         ),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
                       ),
-                      Center(
-                          child: Text(
-                        "Set Drop Off",
-                        style:
-                            TextStyle(fontSize: 18.0, fontFamily: "Brand-Bold"),
+                      child: Stack(
+                        children: [
+                          GestureDetector(
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.red,
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          Center(
+                              child: Text("Set Drop Off",
+                                  style: GoogleFonts.pacifico(
+                                      textStyle: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900,
+                                  )))),
+                        ],
                       )),
-                    ],
-                  ),
                   SizedBox(
                     height: 16.0,
                   ),
@@ -77,8 +88,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: [
                       Image.asset(
                         "images/pickicon.png",
-                        height: 28.0,
-                        width: 28.0,
+                        height: 14.0,
+                        width: 14.0,
                       ),
                       SizedBox(
                         width: 15.0,
@@ -116,8 +127,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: [
                       Image.asset(
                         "images/desticon.png",
-                        height: 28.0,
-                        width: 28.0,
+                        height: 14.0,
+                        width: 14.0,
                       ),
                       SizedBox(
                         width: 15.0,
