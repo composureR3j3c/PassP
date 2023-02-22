@@ -1195,13 +1195,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     print(directionDetailsInfo!.e_points);
 
     PolylinePoints pPoints = PolylinePoints();
-    List<PointLatLng> decodedPolyLinePointsResultList =
-        LatLng(directionDetailsInfo.e_points!);
+    List decodedPolyLinePointsResultList = (directionDetailsInfo.e_points!);
 
     pLineCoOrdinatesList.clear();
 
     if (decodedPolyLinePointsResultList.isNotEmpty) {
-      decodedPolyLinePointsResultList.forEach((PointLatLng pointLatLng) {
+      decodedPolyLinePointsResultList.forEach((pointLatLng) {
         pLineCoOrdinatesList
             .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
       });
