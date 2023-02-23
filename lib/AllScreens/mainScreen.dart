@@ -56,6 +56,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   bool searchScreen = true;
   late DirectDetails tripDirectDetails = DirectDetails();
   bool nearbyAvailableDriversKeyLoaded = false;
+
   Set<Marker> markerSet = {};
   Set<Circle> circlesSet = {};
   List<LatLng> pLineCoOrdinatesList = [];
@@ -236,7 +237,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     setState(() {
       requestHeight = 0;
       searchContainerHeight = 0;
-      rideDetailContainerHeight = 570;
+      rideDetailContainerHeight = 450;
       assignedDriverInfoContainerHeight = 0;
     });
   }
@@ -335,6 +336,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             myLocationEnabled: true,
             zoomControlsEnabled: true,
             zoomGesturesEnabled: true,
+            polylines: polyLineSet,
+            circles: circlesSet,
             markers: markerSet,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
@@ -483,7 +486,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         )
                       ]),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 17.5),
+                    padding: const EdgeInsets.symmetric(vertical: 9.5),
                     child: Column(
                       children: [
                         SizedBox(
@@ -758,7 +761,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                           ),
                         ),
                         SizedBox(
-                          height: 20.0,
+                          height: 5.0,
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -787,85 +790,69 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         SizedBox(
                           height: 20.0,
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 50.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.black87,
-                              // backgroundColor: Colors.cyan
-                            ),
-                            // color: Theme.ofdecoration: BoxDecoration(
-                            //                       color: Colors.white,
-                            //                       borderRadius: BorderRadius.only(
-                            //                           topLeft: Radius.circular(18.0),
-                            //                           topRight: Radius.circular(18.0)),
-                            //                       boxShadow: [
-                            //                         BoxShadow(
-                            //                           color: Colors.black,
-                            //                           blurRadius: 16.0,
-                            //                           spreadRadius: 0.8,
-                            //                           offset: Offset(1, 1),
-                            //                         )
-                            //                       ]),(context).red,
-                            onPressed: () {
-                              setState(() {
-                                displayRequest();
-                              });
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(17.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Request",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 0.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.black87,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    displayRequest();
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(17.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Request ",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      Icon(FontAwesomeIcons.taxi,
+                                          color: Colors.white, size: 26.0),
+                                    ],
                                   ),
-                                  Icon(FontAwesomeIcons.taxi,
-                                      color: Colors.white, size: 26.0),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 50.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.red[800],
-                              // backgroundColor: Colors.cyan
+                            SizedBox(
+                              width: 10.0,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                cancelRideRequest();
-                              });
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(17.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Back",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 0.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.red[800],
+                                  // backgroundColor: Colors.cyan
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    cancelRideRequest();
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(17.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(FontAwesomeIcons.undo,
+                                          color: Colors.white, size: 26.0),
+                                    ],
                                   ),
-                                  Icon(FontAwesomeIcons.undo,
-                                      color: Colors.white, size: 26.0),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
+                            )
+                          ],
                         ),
                       ],
                     ),
@@ -1084,6 +1071,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     var dropOffLatlng =
         LatLng(finalPosition!.latitude!, finalPosition.longitude!);
 
+    Fluttertoast.showToast(msg: "Please Wait...");
     // showDialog(context: context, builder: (BuildContext context)=>ProgressDialog(type:ProgressDialogType.Normal).style(message: "Please Wait...")  }
 
     var details =
@@ -1185,6 +1173,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     //     context: context,
     //     builder: (BuildContext context) => ProgressDialog(message: "Please wait...",),
     // );
+    Fluttertoast.showToast(msg: "Please Wait...");
 
     var directionDetailsInfo =
         await AssistantMethods.obtainDirection(originLatLng, destinationLatLng);
@@ -1199,17 +1188,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     pLineCoOrdinatesList.clear();
 
-    if (decodedPolyLinePointsResultList.isNotEmpty) {
-      decodedPolyLinePointsResultList.forEach((pointLatLng) {
-        pLineCoOrdinatesList.add(LatLng(pointLatLng[1], pointLatLng[0]));
-      });
-    }
-
+    // if (decodedPolyLinePointsResultList.isNotEmpty) {
+    decodedPolyLinePointsResultList.forEach((pointLatLng) {
+      pLineCoOrdinatesList.add(LatLng(pointLatLng[1], pointLatLng[0]));
+    });
+    // }
     polyLineSet.clear();
 
     setState(() {
       Polyline polyline = Polyline(
-        color: Colors.purpleAccent,
+        color: Colors.red,
         polylineId: const PolylineId("PolylineID"),
         jointType: JointType.round,
         points: pLineCoOrdinatesList,
@@ -1217,7 +1205,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         endCap: Cap.roundCap,
         geodesic: true,
       );
-      print("polyline" + polyline.toString());
+      print("polylineform" + polyline.toString());
       polyLineSet.add(polyline);
     });
 
@@ -1259,16 +1247,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       position: destinationLatLng,
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
     );
-
-    setState(() {
-      markerSet.add(originMarker);
-      markerSet.add(destinationMarker);
-    });
-
     Circle originCircle = Circle(
       circleId: const CircleId("originID"),
       fillColor: Colors.green,
-      radius: 12,
+      radius: 16,
       strokeWidth: 3,
       strokeColor: Colors.white,
       center: originLatLng,
@@ -1277,13 +1259,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     Circle destinationCircle = Circle(
       circleId: const CircleId("destinationID"),
       fillColor: Colors.red,
-      radius: 12,
+      radius: 16,
       strokeWidth: 3,
       strokeColor: Colors.white,
       center: destinationLatLng,
     );
 
     setState(() {
+      markerSet.add(originMarker);
+      markerSet.add(destinationMarker);
       circlesSet.add(originCircle);
       circlesSet.add(destinationCircle);
     });
