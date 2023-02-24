@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ridee/Helpers/OnPremMethods.dart';
 import '../Globals/Global.dart';
 import '../Widgets/ProgressDialog.dart';
 import 'LoginScreen.dart';
@@ -15,12 +18,14 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController nameTextEditingController = TextEditingController();
+  TextEditingController LnameTextEditingController = TextEditingController();
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
   validateForm() {
-    if (nameTextEditingController.text.length < 3) {
+    if (nameTextEditingController.text.length < 3 ||
+        LnameTextEditingController.text.length < 3) {
       Fluttertoast.showToast(msg: "name must be atleast 3 Characters.");
     } else if (!emailTextEditingController.text.contains("@")) {
       Fluttertoast.showToast(msg: "Email address is not Valid.");
@@ -67,9 +72,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
       reference.child(firebaseUser.uid).set(userMap);
 
       currentFirebaseUser = firebaseUser;
-      Fluttertoast.showToast(msg: "Account has been Created.");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => MySplashScreen()));
+      var response = await OnPremMethods.createUseronPrem(
+          nameTextEditingController.text.trim(),
+          LnameTextEditingController.text.trim(),
+          phoneTextEditingController.text.trim(),
+          emailTextEditingController.text.trim(),
+          phoneTextEditingController.text.trim(),
+          passwordTextEditingController.text.trim());
+      print("response");
+      print(response);
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(msg: "Account has been Created.");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => MySplashScreen()));
+      } else if (response.statusCode == 400) {
+        Fluttertoast.showToast(msg: "Account has not been Created.");
+        Navigator.pop(context);
+      }
     } else {
       Navigator.pop(context);
       Fluttertoast.showToast(msg: "Account has not been Created.");
@@ -122,7 +141,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ],
                       )),
-
                   // const Text(
                   //   "Register as a user",
                   //   style: TextStyle(
@@ -153,6 +171,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
+                  TextField(
+                    controller: LnameTextEditingController,
+                    style: const TextStyle(color: Colors.black54),
+                    decoration: const InputDecoration(
+                      labelText: "Last Name",
+                      hintText: "Last Name",
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black54),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black54),
+                      ),
+                      hintStyle: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 10,
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+
                   TextField(
                     controller: emailTextEditingController,
                     keyboardType: TextInputType.emailAddress,

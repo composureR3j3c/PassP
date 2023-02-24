@@ -1134,6 +1134,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void updateAvailableDriversNow() {
+    if (!mounted) return;
     setState(() {
       markerSet.clear();
     });
@@ -1147,8 +1148,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           markerId: MarkerId('driver${driver.key}'),
           position: driverAvailableposition,
           icon: nearByIcon!,
-          // ??
-          // BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
           rotation: AssistantMethods.createRandomNumber(360));
 
       tMarkers.add(marker);
