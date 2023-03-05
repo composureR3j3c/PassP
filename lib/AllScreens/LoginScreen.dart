@@ -140,8 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(color: Colors.black54),
                     decoration: const InputDecoration(
-                      labelText: "Email",
-                      hintText: "Email",
+                      labelText: "Email or Phone",
+                      hintText: "Email or Phone",
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),

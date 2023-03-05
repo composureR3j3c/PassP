@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ridee/AllScreens/LoginScreen.dart';
+import 'package:ridee/AllScreens/SplashScreen.dart';
 import 'package:ridee/Globals/Global.dart';
+import 'package:ridee/Helpers/OnPremMethods.dart';
 import 'package:ridee/Helpers/sendMail.dart';
+import 'package:ridee/Models/Users.dart';
 
 import '../Helpers/assistantMethods.dart';
 
@@ -39,22 +42,26 @@ class DrawerWidget extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          name!,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Text(
+                            name!,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          phone!,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
+                        Expanded(
+                          child: Text(
+                            phone!,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
@@ -71,14 +78,14 @@ class DrawerWidget extends StatelessWidget {
                 // Navigator.pushReplacementNamed(context, '/');
               },
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Visit Profile'),
-              onTap: () {
-                // Navigator.pushReplacementNamed(context, OrdersScreen.routeName);
-              },
-            ),
+            // Divider(),
+            // ListTile(
+            //   leading: Icon(Icons.person),
+            //   title: Text('Visit Profile'),
+            //   onTap: () {
+            //     // Navigator.pushReplacementNamed(context, OrdersScreen.routeName);
+            //   },
+            // ),
             Divider(),
             ListTile(
               leading: Icon(Icons.person),
@@ -111,11 +118,15 @@ class DrawerWidget extends StatelessWidget {
               leading: Icon(Icons.exit_to_app),
               title: Text('Log Out'),
               onTap: () {
-                fAuth.signOut();
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (c) => LoginScreen()));
-
-                // Provider.of<Auth>(context, listen: false).logout();
+                var res = OnPremMethods.premLoginOut(userModelCurrentInfo!.phone!);
+                  if (res != 404) {
+                    userModelCurrentInfo = UserModel();
+                    fAuth.signOut();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => LoginScreen()));
+                  }
               },
             ),
           ],
