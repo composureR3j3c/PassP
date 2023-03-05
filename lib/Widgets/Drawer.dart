@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ridee/AllScreens/LoginScreen.dart';
 import 'package:ridee/AllScreens/SplashScreen.dart';
+import 'package:ridee/AllScreens/searchScreen.dart';
 import 'package:ridee/Globals/Global.dart';
 import 'package:ridee/Helpers/OnPremMethods.dart';
 import 'package:ridee/Helpers/sendMail.dart';
@@ -87,14 +88,26 @@ class DrawerWidget extends StatelessWidget {
             //   },
             // ),
             Divider(),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Pre-Order'),
-              onTap: () {
-                // Navigator.pushReplacementNamed(context, OrdersScreen.routeName);
-              },
-            ),
-            Divider(),
+            // ListTile(
+            //   leading: Icon(Icons.person),
+            //   title: Text('Pre-Order'),
+            //    onTap: () async {
+            //                     DateTime? selectedDate= await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(DateTime.now().year),);
+
+            //                     preorderTime=selectedDate;
+
+            //                    var res = await Navigator.push(
+            //                         context,
+            //                         MaterialPageRoute(
+            //                             builder: (context) => SearchScreen()));
+            //                     if (res == "obtainDirection") {
+            //                       await getPlaceDirections();
+            //                       await drawPolyLineFromOriginToDestination();
+            //                       displayRideDetail();
+            //                     }
+            //                   },
+            // ),
+            // Divider(),
             ListTile(
               leading: Icon(Icons.info),
               title: Text('About'),

@@ -265,7 +265,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void callNumber() async {
-    const number = '0912356845'; //set the number here
+    var number = driverPhone; //set the number here
     await FlutterPhoneDirectCaller.callNumber(number);
   }
 
@@ -429,7 +429,21 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () async {},
+                              onTap: () async {
+                                DateTime? selectedDate= await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(DateTime.now().year),);
+
+                                preorderTime=selectedDate;
+
+                               var res = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SearchScreen()));
+                                if (res == "obtainDirection") {
+                                  await getPlaceDirections();
+                                  await drawPolyLineFromOriginToDestination();
+                                  displayRideDetail();
+                                }
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: Colors.black54,
