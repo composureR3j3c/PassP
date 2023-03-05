@@ -8,9 +8,9 @@ import '../Helpers/assistantMethods.dart';
 
 class DrawerWidget extends StatelessWidget {
   final String? name;
-  final String? email;
+  final String? phone;
 
-  const DrawerWidget({Key? key, required this.name, required this.email})
+  const DrawerWidget({Key? key, required this.name, required this.phone})
       : super(key: key);
 
   @override
@@ -51,7 +51,7 @@ class DrawerWidget extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          email!,
+                          phone!,
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.white,

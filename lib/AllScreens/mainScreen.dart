@@ -325,7 +325,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         ),
       ),
       drawer: DrawerWidget(
-          name: userModelCurrentInfo?.name, email: userModelCurrentInfo?.email),
+          name: userModelCurrentInfo?.name, phone: userModelCurrentInfo?.phone),
       body: Stack(
         children: [
           GoogleMap(

@@ -5,9 +5,10 @@ class UserModel{
   String? id;
   String? email;
   String? name;
+  String? lname;
   String? phone;
 
-   UserModel({ required this.id,required this.email,required this.name,required this.phone});
+   UserModel({ required this.id,required this.lname,required this.email,required this.name,required this.phone});
 
    UserModel.fromSnapshot(DataSnapshot dataSnapshot){
      id=dataSnapshot.key!;

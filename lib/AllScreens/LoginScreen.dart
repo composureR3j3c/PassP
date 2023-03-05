@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ridee/Helpers/OnPremMethods.dart'; 
 
 import '../Globals/Global.dart';
 import '../Widgets/ProgressDialog.dart';
@@ -18,9 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
-  validateForm() {
-    if (!emailTextEditingController.text.contains("@")) {
-      Fluttertoast.showToast(msg: "Email address is not Valid.");
+    validateForm() {
+    if (!emailTextEditingController.text.contains("@")|| (emailTextEditingController.text.length>13)) {
+      Fluttertoast.showToast(msg: "Email or Phone address is not Valid.");
     } else if (passwordTextEditingController.text.isEmpty) {
       Fluttertoast.showToast(msg: "Password is required.");
     } else {
@@ -48,19 +49,31 @@ class _LoginScreenState extends State<LoginScreen> {
       Fluttertoast.showToast(msg: "Error: " + msg.toString());
     }))
         .user;
-
+     var response = await OnPremMethods.premLoginIn(
+      emailTextEditingController.text.trim(),
+      passwordTextEditingController.text.trim(),
+    );
     if (firebaseUser != null) {
       DatabaseReference userRef =
           FirebaseDatabase.instance.ref().child("users");
       userRef.child(firebaseUser.uid).once().then((userKey) {
         final snap = userKey.snapshot;
+
         if (snap.value != null) {
           currentFirebaseUser = firebaseUser;
+         
+        }
+         else {
+         if (response != 404) {
           Fluttertoast.showToast(msg: "Login Successful.");
           Navigator.push(context,
               MaterialPageRoute(builder: (c) => const MySplashScreen()));
-        } else {
-          Fluttertoast.showToast(msg: "No record exist with this email.");
+          userModelCurrentInfo!.name = response["profile"]["fname"];
+          userModelCurrentInfo!.lname = response["profile"]["lname"];
+          userModelCurrentInfo!.phone = response["profile"]["phone"];
+          userModelCurrentInfo!.email = response["profile"]["email"];
+          userModelCurrentInfo!.id = response["profile"]["deviceId"];
+        } Fluttertoast.showToast(msg: "No record exist with this email.");
           fAuth.signOut();
           Navigator.push(context,
               MaterialPageRoute(builder: (c) => const MySplashScreen()));
