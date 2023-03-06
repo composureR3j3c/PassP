@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -22,6 +23,8 @@ import 'package:ridee/Widgets/Divider.dart';
 import 'package:ridee/Widgets/Drawer.dart';
 import 'package:ridee/Widgets/DropDown.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+
+import '../Helpers/OnPremMethods.dart';
 
 import '../Widgets/Colorize.dart';
 
@@ -53,6 +56,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   String driverRideStatus = "Driver is Coming";
   String userRideRequestStatus = "";
 
+  var econ, minBus, minVan;
+
   bool searchScreen = true;
   late DirectDetails tripDirectDetails = DirectDetails();
   bool nearbyAvailableDriversKeyLoaded = false;
@@ -82,115 +87,75 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     displaySearch();
   }
 
-  void saveRideRequest() {
+  void saveRideRequest() async {
+    orderTime = DateTime.now();
     var pickup =
         Provider.of<AppData>(context, listen: false).userPickUpLocation;
     var dropOff = Provider.of<AppData>(context, listen: false).dropOffLocation;
 
     Map pickUpLocMap = {
-      "longitude": pickup?.longitude.toString(),
-      "latitude": pickup?.latitude.toString(),
+      "name": pickup?.placeName,
+      "y": pickup?.longitude.toString(),
+      "x": pickup?.latitude.toString(),
     };
     Map dropOffLocMap = {
-      "longitude": dropOff?.longitude.toString(),
-      "latitude": dropOff?.latitude.toString(),
+      "name": dropOff?.placeName,
+      "y": dropOff?.longitude.toString(),
+      "x": dropOff?.latitude.toString(),
     };
 
     Map rideInfoMap = {
-      "driver_id": "waiting",
-      "payment_method": "cash",
-      "pickup": pickUpLocMap,
-      "dropoff": dropOffLocMap,
-      "created_at": DateTime.now().toString(),
-      "rider_name": userModelCurrentInfo?.name,
-      "rider_phone": userModelCurrentInfo?.phone,
-      "pickup_address": pickup?.placeName,
-      "dropoff_address": dropOff?.placeName
+      "passenger": {
+        "id": userModelCurrentInfo?.phone,
+        "location": {"from": pickUpLocMap, "to": dropOffLocMap}
+      },
+      "distance": tripDirectDetails.distance,
+      "carType": "any",
+      "paymentMethod": finalDropdownValue
     };
 
-    // referenceRideRequest!.set(rideInfoMap);
-    ((eventSnap) {
-      // if (eventSnap.snapshot.value == null) {
-      // return;
-      // }
+    var response = await OnPremMethods.requestRide(rideInfoMap);
 
-      if ((eventSnap.snapshot.value as Map)["car_details"] != null) {
-        setState(() {
-          driverCarDetails =
-              (eventSnap.snapshot.value as Map)["car_details"].toString();
-        });
-      }
-
-      if ((eventSnap.snapshot.value as Map)["driverPhone"] != null) {
-        setState(() {
-          driverPhone =
-              (eventSnap.snapshot.value as Map)["driverPhone"].toString();
-        });
-      }
-
-      if ((eventSnap.snapshot.value as Map)["driverName"] != null) {
-        setState(() {
-          driverName =
-              (eventSnap.snapshot.value as Map)["driverName"].toString();
-        });
-      }
-      if ((eventSnap.snapshot.value as Map)["status"] != null) {
-        userRideRequestStatus =
-            (eventSnap.snapshot.value as Map)["status"].toString();
-      }
-      if (userRideRequestStatus == "accepted") {
+    if (response != 404) {
+      if (response["status"] == "No Driver Found") {
+      } else {
+        currTripId = response["tripId"];
+        driverCarDetails = response["driver"]["carDetails"]["carBrand"];
+        driverPhone = response["driver"]["phone"];
+        driverName = response["driver"]["name"];
+        int driverDistance = (response["driver"]["driverDistance"]).truncate();
+        userRideRequestStatus = "accepted";
         setState(() {
           showUIForAssignedDriverInfo();
-          driverRideStatus = "Driver is Coming";
+          driverRideStatus =
+              "Driver is Coming... " + driverDistance.toString() + "away";
         });
+
+        while (userRideRequestStatus == "accepted" ||
+            userRideRequestStatus == "statrted") {
+          var response = await OnPremMethods.getTripDetail(currTripId!);
+          setState(() {
+            userRideRequestStatus = driverRideStatus = response["tripStatus"];
+          });
+          var duration = const Duration(seconds: 5);
+          print('Start sleeping');
+          sleep(duration);
+          print('5 seconds has passed');
+          if (userRideRequestStatus == "statrted" &&
+              (DateTime.now().minute.toDouble() -
+                          orderTime!.minute.toDouble()) %
+                      15 ==
+                  0) {
+            locatePosition();
+
+            var res = await OnPremMethods.updateLocation(
+                currTripId!,
+                currentPosition.latitude.toString(),
+                currentPosition.latitude.toString());
+          }
+        }
       }
-      if (userRideRequestStatus == "arrived") {
-        setState(() {
-          driverRideStatus = "Driver has Arrived";
-        });
-      }
-
-      if (userRideRequestStatus == "ontrip") {
-        setState(() {
-          driverRideStatus = "Going towards Destination";
-        });
-      }
-      if (userRideRequestStatus == "ended") {
-        setState(() {
-          driverRideStatus = "Trip has Ended Time to Pay";
-        });
-      }
-    });
-
-    // sendNotificationToDriverNow("7j11klugrzgvwrAHyvJp38woWIf1");
-
-    // FirebaseDatabase.instance
-    //     .ref()
-    //     .child("drivers")
-    //     .child("7j11klugrzgvwrAHyvJp38woWIf1")
-    //     .child("newRide")
-    //     .onValue
-    //     .listen((eventSnapshot) {
-    //   //1. driver has cancel the rideRequest :: Push Notification
-    //   // (newRideStatus = idle)
-    //   if (eventSnapshot.snapshot.value == "idle") {
-    //     Fluttertoast.showToast(
-    //         msg:
-    //             "The driver has cancelled your request. please request again.");
-
-    //     //   Future.delayed(const Duration(milliseconds: 3000), () {
-    //     //     Fluttertoast.showToast(msg: "Please Restart App Now.");
-    //     Navigator.pop(context);
-    //     //   });
-    //   }
-
-    //   //2. driver has accept the rideRequest :: Push Notification
-    //   // (newRideStatus = accepted)
-    //   if (eventSnapshot.snapshot.value == "accepted") {
-    //     //design and display ui for displaying assigned driver information
-    //     // showUIForAssignedDriverInfo();
-    //   }
-    // });
+    }
   }
 
   showUIForAssignedDriverInfo() {
@@ -234,6 +199,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   void displayRideDetail() async {
     // await getDirections();
+    var res = await AssistantMethods.calcualateFares(tripDirectDetails);
+
+    econ = res["econ"].toString();
+    minVan = res["minVan"].toString();
+    minBus = res["minBus"].toString();
     setState(() {
       requestHeight = 0;
       searchContainerHeight = 0;
@@ -430,11 +400,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                DateTime? selectedDate= await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(DateTime.now().year),);
-
-                                preorderTime=selectedDate;
-
-                               var res = await Navigator.push(
+                                DateTime? selectedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime(DateTime.now().year + 1),
+                                );
+                                preorderTime = selectedDate;
+                                var res = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SearchScreen()));
@@ -563,73 +536,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                         radius: 35,
                                         child: Text(
                                           tripDirectDetails.distance != null
-                                              ? "ETB ${AssistantMethods.calcualateFares(tripDirectDetails, "").toString()}"
-                                              : "ETB 100",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white12,
-                                        blurRadius: 1,
-                                        spreadRadius: 0.8,
-                                        offset: Offset(0.2, 0.2),
-                                      )
-                                    ]),
-                                // color: Colors.amber,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Image.asset(
-                                        "images/logo2.png",
-                                        height: 70.0,
-                                        width: 80.0,
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 25,
-                                        child: Text(
-                                          "Lada",
-                                          style: TextStyle(
-                                              fontSize: 12.2,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 30,
-                                        child: Text(
-                                          (tripDirectDetails.distance != null)
-                                              ? "${tripDirectDetails.distance.toString()} Km"
-                                              : "5 km",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 35,
-                                        child: Text(
-                                          tripDirectDetails.distance != null
-                                              ? "ETB ${AssistantMethods.calcualateFares(tripDirectDetails, "lada").toString()}"
+                                              ? "ETB ${econ}"
                                               : "ETB 100",
                                           style: TextStyle(
                                               fontSize: 15.2,
@@ -695,7 +602,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                         radius: 35,
                                         child: Text(
                                           tripDirectDetails.distance != null
-                                              ? "ETB ${AssistantMethods.calcualateFares(tripDirectDetails, "van").toString()}"
+                                              ? "ETB ${minBus}"
                                               : "ETB 100",
                                           style: TextStyle(
                                               fontSize: 15.2,
@@ -760,7 +667,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                         radius: 35,
                                         child: Text(
                                           tripDirectDetails.distance != null
-                                              ? "ETB ${AssistantMethods.calcualateFares(tripDirectDetails, "bus").toString()}"
+                                              ? "ETB ${minBus}"
                                               : "ETB 100",
                                           style: TextStyle(
                                               fontSize: 15.2,

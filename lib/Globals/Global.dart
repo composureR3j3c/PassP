@@ -15,5 +15,10 @@ String driverName = "";
 String driverPhone = "";
 String premUrl = "https://rideapi.gubanet.com";
 
-
 DateTime? preorderTime;
+
+String? currTripId;
+
+String? finalDropdownValue;
+
+DateTime? orderTime;

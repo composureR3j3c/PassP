@@ -15,13 +15,8 @@ class MySplashScreen extends StatefulWidget {
 
 class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
-    fAuth.currentUser != null
-        ? AssistantMethods.readCurrentOnlineUserInfo()
-        : null;
-
     Timer(const Duration(seconds: 3), () async {
-      if (await fAuth.currentUser != null) {
-        currentFirebaseUser = fAuth.currentUser;
+      if (userModelCurrentInfo!.id != null) {
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => MainScreen()));
       } else {

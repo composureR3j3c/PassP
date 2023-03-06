@@ -24,8 +24,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordTextEditingController = TextEditingController();
 
   validateForm() {
-    String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-    RegExp regExp = new RegExp(patttern);
+    // String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    // RegExp regExp = new RegExp(pattern);
     if (nameTextEditingController.text.length < 3 ||
         LnameTextEditingController.text.length < 3) {
       Fluttertoast.showToast(msg: "name must be atleast 3 Characters.");
@@ -33,11 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Fluttertoast.showToast(msg: "Email address is not Valid.");
     } else if (phoneTextEditingController.text.isEmpty) {
       Fluttertoast.showToast(msg: "Phone Number is required.");
-    }  else if (!regExp.hasMatch(phoneTextEditingController.text)) {
-      return 'Please enter valid mobile number';
-
-    } 
-     else if (passwordTextEditingController.text.length < 6) {
+    } else if (passwordTextEditingController.text.length < 6) {
       Fluttertoast.showToast(msg: "Password must be atleast 6 Characters.");
     } else {
       saveUserInfoNow();
@@ -83,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           LnameTextEditingController.text.trim(),
           phoneTextEditingController.text.trim(),
           emailTextEditingController.text.trim(),
-          phoneTextEditingController.text.trim(),
+          currentFirebaseUser!.uid,
           passwordTextEditingController.text.trim());
       print("response");
       print(response);

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ridee/Helpers/OnPremMethods.dart';
 
-const List<String> list = <String>[
-  'Cash',
-  'Telebirr',
-  'Wallet',
-  'Bank Transfer'
+import '../Globals/Global.dart';
+
+var list = <Map>[
+  {"name": "Cash", "code": "cash"},
+  {"name": "Telebirr", "code": "telebirr"},
+  {"name": "Bank Transfer", "code": "bankTxn"}
 ];
 
 class DropdownButtonCash extends StatefulWidget {
@@ -14,7 +16,15 @@ class DropdownButtonCash extends StatefulWidget {
 }
 
 class _DropdownButtonExampleState extends State<DropdownButtonCash> {
-  String dropdownValue = list.first;
+  String dropdownValue = list.first["code"];
+
+  // void initState() async {
+  //   // TODO: implement initState
+  //   super.initState();
+
+  //   var res =  await OnPremMethods.getPaymentMethods();
+  //   list = <Map>[res];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +40,13 @@ class _DropdownButtonExampleState extends State<DropdownButtonCash> {
       onChanged: (String? value) {
         // This is called when the user selects an item.
         setState(() {
-          dropdownValue = value!;
+          finalDropdownValue = dropdownValue = value!;
         });
       },
-      items: list.map<DropdownMenuItem<String>>((String value) {
+      items: list.map<DropdownMenuItem<String>>((Map value) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: value["code"],
+          child: Text(value["name"]),
         );
       }).toList(),
     );

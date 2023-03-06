@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ridee/Globals/Global.dart';
+import 'package:ridee/Helpers/OnPremMethods.dart';
 import 'package:ridee/Models/Users.dart';
 import 'package:ridee/Models/address.dart';
 import 'package:ridee/Models/directDetails.dart';
@@ -104,16 +105,12 @@ class AssistantMethods {
     }
   }
 
-  static int calcualateFares(DirectDetails directDetails, String? type) {
-    double Fare = directDetails.distance! * 18 + 100;
-    if (type == "lada") {
-      Fare = directDetails.distance! * 12 + 100;
-    } else if (type == "bus") {
-      Fare = directDetails.distance! * 25 + 100;
-    } else if (type == "van") {
-      Fare = directDetails.distance! * 20 + 100;
-    }
-    return Fare.truncate();
+  static Future<dynamic> calcualateFares(DirectDetails directDetails) async {
+    var FareData = await OnPremMethods.getfare(directDetails.distance!);
+    print("FareData" + FareData);
+    var Fare = "";
+
+    return Fare;
   }
 
   static void readCurrentOnlineUserInfo() async {
