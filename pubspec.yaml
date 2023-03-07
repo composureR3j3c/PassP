@@ -51,6 +51,7 @@ dependencies:
   flutter_phone_direct_caller: ^2.1.1
   google_fonts: ^4.0.3
   multi_language_json: ^1.2.0
+  flutter_secure_storage: ^8.0.0
 
 dev_dependencies:
   flutter_test:

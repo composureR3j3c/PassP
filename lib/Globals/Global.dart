@@ -4,7 +4,7 @@ import '../Models/Users.dart';
 
 final FirebaseAuth fAuth = FirebaseAuth.instance;
 User? currentFirebaseUser;
-UserModel? userModelCurrentInfo;
+UserModel? userModelCurrentInfo = UserModel();
 
 // UserModel? userCurrentInfo;
 String cloudMessagingServerToken =
@@ -20,5 +20,6 @@ DateTime? preorderTime;
 String? currTripId;
 
 String? finalDropdownValue;
+String? carTypeFinal = "econ";
 
 DateTime? orderTime;

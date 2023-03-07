@@ -170,7 +170,7 @@ class OnPremMethods {
         headers: header,
       );
       if (httpResponse.statusCode == 200) {
-        return jsonDecode(httpResponse.body);
+        return (httpResponse.body);
       } else {
         return 404;
       }
@@ -190,7 +190,7 @@ class OnPremMethods {
     };
     Map Body = {
       "tripId": tripId,
-      "path": {"x": lat, "y": lon}
+      "path": {"x": lon, "y": lat}
     };
     try {
       http.Response httpResponse = await http.post(Uri.parse(url),
@@ -204,5 +204,32 @@ class OnPremMethods {
       return e;
     }
   }
+
   // http://rideapi.gubanet.com/ride-app/tripRoute
+  static Future<dynamic> getAvailableDrivers(double lat, double lon) async {
+    String url = "$premUrl/ride-app/getAvailableDrivers";
+    String key =
+        "Qq87PGWPscPQfzlCz4ralI7JtrGcZ6ymYxjGxxHOmTKsBPCxXxSDlZr5jjidQzi117kdaCggXtw8HQ9fS2CEsMdavclyeO4uN4D1Ymm4OTnzlGPeFFT5PPN1JEPWSS7w";
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': key,
+    };
+    Map Body = {
+      "passenger": {
+        "location": {"x": lon, "y": lat}
+      }
+    };
+    try {
+      http.Response httpResponse = await http.post(Uri.parse(url),
+          headers: header, body: jsonEncode(Body));
+      if (httpResponse.statusCode == 200) {
+        print("avail driver" + httpResponse.body.toString());
+        return jsonDecode(httpResponse.body);
+      } else {
+        return 404;
+      }
+    } catch (e) {
+      return e;
+    }
+  }
 }

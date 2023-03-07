@@ -18,13 +18,20 @@ class DropdownButtonCash extends StatefulWidget {
 class _DropdownButtonExampleState extends State<DropdownButtonCash> {
   String dropdownValue = list.first["code"];
 
-  // void initState() async {
-  //   // TODO: implement initState
-  //   super.initState();
+  awaiter() async {
+    var res = await OnPremMethods.getPaymentMethods();
+    print("res" + res);
+    // list = <Map>[res];
 
-  //   var res =  await OnPremMethods.getPaymentMethods();
-  //   list = <Map>[res];
-  // }
+    return res;
+  }
+
+  void initState() {
+    // TODO: implement initState
+    // await awaiter();
+    super.initState();
+    finalDropdownValue = list.first["code"];
+  }
 
   @override
   Widget build(BuildContext context) {

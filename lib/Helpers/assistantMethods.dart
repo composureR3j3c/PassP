@@ -91,8 +91,7 @@ class AssistantMethods {
       DirectDetails directDetails = DirectDetails();
 
       directDetails.distance =
-          (requestResponse["features"][0]["properties"]["distance"] / 1000)
-              .truncate();
+          (requestResponse["features"][0]["properties"]["distance"]).truncate();
       print("####distance####");
 
       directDetails.time = requestResponse["features"][0]["properties"]["time"];
@@ -107,10 +106,9 @@ class AssistantMethods {
 
   static Future<dynamic> calcualateFares(DirectDetails directDetails) async {
     var FareData = await OnPremMethods.getfare(directDetails.distance!);
-    print("FareData" + FareData);
-    var Fare = "";
+    print("FareData" + FareData.toString());
 
-    return Fare;
+    return FareData;
   }
 
   static void readCurrentOnlineUserInfo() async {

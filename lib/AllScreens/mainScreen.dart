@@ -95,13 +95,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     Map pickUpLocMap = {
       "name": pickup?.placeName,
-      "y": pickup?.longitude.toString(),
-      "x": pickup?.latitude.toString(),
+      "y": pickup?.latitude.toString(),
+      "x": pickup?.longitude.toString(),
     };
     Map dropOffLocMap = {
       "name": dropOff?.placeName,
-      "y": dropOff?.longitude.toString(),
-      "x": dropOff?.latitude.toString(),
+      "y": dropOff?.latitude.toString(),
+      "x": dropOff?.longitude.toString(),
     };
 
     Map rideInfoMap = {
@@ -109,8 +109,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         "id": userModelCurrentInfo?.phone,
         "location": {"from": pickUpLocMap, "to": dropOffLocMap}
       },
-      "distance": tripDirectDetails.distance,
-      "carType": "any",
+      "distance": tripDirectDetails.distance.toString(),
+      "carType": "econ",
+      "time": tripDirectDetails.time,
       "paymentMethod": finalDropdownValue
     };
 
@@ -118,6 +119,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     if (response != 404) {
       if (response["status"] == "No Driver Found") {
+        Fluttertoast.showToast(msg: "No Driver Found.");
+        print("No Driver Found.");
+        displaySearch();
       } else {
         currTripId = response["tripId"];
         driverCarDetails = response["driver"]["carDetails"]["carBrand"];
@@ -155,6 +159,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           }
         }
       }
+    } else {
+      Fluttertoast.showToast(msg: "No Driver Found.");
+      print("No Driver Found false.");
+      displaySearch();
     }
   }
 
@@ -165,36 +173,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       requestHeight = 0;
       assignedDriverInfoContainerHeight = 300;
     });
-  }
-
-  sendNotificationToDriverNow(String chosenDriverId) {
-    print("##notification send##");
-    // FirebaseDatabase.instance
-    //     .ref()
-    //     .child("drivers")
-    //     .child(chosenDriverId)
-    //     .child("token")
-    //     .once()
-    //     .then((snap) {
-    //   if (snap.snapshot.value != null) {
-    //     String deviceRegistrationToken = snap.snapshot.value.toString();
-
-    //     //send Notification Now
-    //     // AssistantMethods.sendNotificationToDriverNow(
-    //     //   deviceRegistrationToken,
-    //     //   referenceRideRequest!.key.toString(),
-    //     //   context,
-    //     // );
-    //     print("############notification send##");
-    //     // print(referenceRideRequest!.key.toString());
-    //     print("#############notification send##");
-
-    //     Fluttertoast.showToast(msg: "Notification sent Successfully.");
-    //   } else {
-    //     Fluttertoast.showToast(msg: "Please choose another driver.");
-    //     return;
-    //   }
-    // });
   }
 
   void displayRideDetail() async {
@@ -482,199 +460,211 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         Expanded(
                           child: Column(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.red[100],
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white12,
-                                        blurRadius: 1,
-                                        spreadRadius: 0.8,
-                                        offset: Offset(0.2, 0.2),
-                                      )
-                                    ]),
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Image.asset(
-                                        "images/taxi.png",
-                                        height: 70.0,
-                                        width: 80.0,
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 25,
-                                        child: Text(
-                                          "Any Car",
-                                          style: TextStyle(
-                                              fontSize: 12.2,
-                                              fontWeight: FontWeight.normal),
+                              GestureDetector(
+                                onTap: () {
+                                  carTypeFinal = econ;
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.red[100],
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white12,
+                                          blurRadius: 1,
+                                          spreadRadius: 0.8,
+                                          offset: Offset(0.2, 0.2),
+                                        )
+                                      ]),
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Image.asset(
+                                          "images/taxi.png",
+                                          height: 70.0,
+                                          width: 80.0,
                                         ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 30,
-                                        child: Text(
-                                          (tripDirectDetails.distance != null)
-                                              ? "${tripDirectDetails.distance.toString()} Km"
-                                              : "5 km",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 25,
+                                          child: Text(
+                                            "Any Car",
+                                            style: TextStyle(
+                                                fontSize: 12.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
                                         ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 35,
-                                        child: Text(
-                                          tripDirectDetails.distance != null
-                                              ? "ETB ${econ}"
-                                              : "ETB 100",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 30,
+                                          child: Text(
+                                            (tripDirectDetails.distance != null)
+                                                ? "${(tripDirectDetails.distance! / 1000).truncate().toString()} Km"
+                                                : "5 km",
+                                            style: TextStyle(
+                                                fontSize: 15.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 35,
+                                          child: Text(
+                                            tripDirectDetails.distance != null
+                                                ? "ETB ${econ}"
+                                                : "ETB 100",
+                                            style: TextStyle(
+                                                fontSize: 15.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white10,
-                                        blurRadius: 1,
-                                        spreadRadius: 0.8,
-                                        offset: Offset(0.2, 0.2),
-                                      )
-                                    ]),
-                                // color: Colors.amber,
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Image.asset(
-                                        "images/automoblie.png",
-                                        height: 70.0,
-                                        width: 80.0,
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 25,
-                                        child: Text(
-                                          "Minivan",
-                                          style: TextStyle(
-                                              fontSize: 12.2,
-                                              fontWeight: FontWeight.normal),
+                              GestureDetector(
+                                onTap: () {
+                                  carTypeFinal = minVan;
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white10,
+                                          blurRadius: 1,
+                                          spreadRadius: 0.8,
+                                          offset: Offset(0.2, 0.2),
+                                        )
+                                      ]),
+                                  // color: Colors.amber,
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Image.asset(
+                                          "images/automoblie.png",
+                                          height: 70.0,
+                                          width: 80.0,
                                         ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 30,
-                                        child: Text(
-                                          (tripDirectDetails.distance != null)
-                                              ? "${tripDirectDetails.distance.toString()} Km"
-                                              : "5 km",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 25,
+                                          child: Text(
+                                            "Minivan",
+                                            style: TextStyle(
+                                                fontSize: 12.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
                                         ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 35,
-                                        child: Text(
-                                          tripDirectDetails.distance != null
-                                              ? "ETB ${minBus}"
-                                              : "ETB 100",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 30,
+                                          child: Text(
+                                            (tripDirectDetails.distance != null)
+                                                ? "${(tripDirectDetails.distance! / 1000).truncate().toString()} Km"
+                                                : "5 km",
+                                            style: TextStyle(
+                                                fontSize: 15.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 35,
+                                          child: Text(
+                                            tripDirectDetails.distance != null
+                                                ? "ETB ${minBus}"
+                                                : "ETB 100",
+                                            style: TextStyle(
+                                                fontSize: 15.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white12,
-                                        blurRadius: 1,
-                                        spreadRadius: 0.8,
-                                        offset: Offset(0.2, 0.2),
-                                      )
-                                    ]),
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Image.asset(
-                                        "images/minibus.png",
-                                        height: 70.0,
-                                        width: 80.0,
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 25,
-                                        child: Text(
-                                          "Minibus",
-                                          style: TextStyle(
-                                              fontSize: 12.2,
-                                              fontWeight: FontWeight.normal),
+                              GestureDetector(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white12,
+                                          blurRadius: 1,
+                                          spreadRadius: 0.8,
+                                          offset: Offset(0.2, 0.2),
+                                        )
+                                      ]),
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Image.asset(
+                                          "images/minibus.png",
+                                          height: 70.0,
+                                          width: 80.0,
                                         ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 30,
-                                        child: Text(
-                                          (tripDirectDetails.distance != null)
-                                              ? "${tripDirectDetails.distance.toString()} Km"
-                                              : "5 km",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 25,
+                                          child: Text(
+                                            "Minibus",
+                                            style: TextStyle(
+                                                fontSize: 12.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
                                         ),
-                                      ),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white10,
-                                        foregroundColor: Colors.black,
-                                        radius: 35,
-                                        child: Text(
-                                          tripDirectDetails.distance != null
-                                              ? "ETB ${minBus}"
-                                              : "ETB 100",
-                                          style: TextStyle(
-                                              fontSize: 15.2,
-                                              fontWeight: FontWeight.normal),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 30,
+                                          child: Text(
+                                            (tripDirectDetails.distance != null)
+                                                ? "${(tripDirectDetails.distance! / 1000).truncate().toString()} Km"
+                                                : "5 km",
+                                            style: TextStyle(
+                                                fontSize: 15.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white10,
+                                          foregroundColor: Colors.black,
+                                          radius: 35,
+                                          child: Text(
+                                            tripDirectDetails.distance != null
+                                                ? "ETB ${minBus}"
+                                                : "ETB 100",
+                                            style: TextStyle(
+                                                fontSize: 15.2,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1003,9 +993,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     // Navigator.pop(context);
   }
 
-  void initGeofireListener() {
+  void initGeofireListener() async {
     //
-    Geofire.initialize("availableDrivers");
+    // Geofire.initialize("availableDrivers");
+    await OnPremMethods.getAvailableDrivers(
+        currentPosition.latitude, currentPosition.longitude);
     Geofire.queryAtLocation(
             currentPosition.latitude, currentPosition.longitude, 5)
         ?.listen((map) {

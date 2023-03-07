@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ridee/Helpers/OnPremMethods.dart';
@@ -22,6 +23,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+  final _storage = const FlutterSecureStorage();
 
   validateForm() {
     // String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
@@ -84,6 +86,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print("response");
       print(response);
       if (response.statusCode == 200) {
+        userModelCurrentInfo?.name = response["profile"]["fname"];
+        userModelCurrentInfo?.lname = response["profile"]["lname"];
+        userModelCurrentInfo?.phone = response["profile"]["phone"];
+        userModelCurrentInfo?.email = response["profile"]["email"];
+        userModelCurrentInfo?.id = response["profile"]["deviceId"];
+
+        await _storage.write(key: "name", value: userModelCurrentInfo?.name);
+        await _storage.write(key: "lname", value: userModelCurrentInfo?.lname);
+        await _storage.write(key: "phone", value: userModelCurrentInfo?.phone);
+        await _storage.write(key: "email", value: userModelCurrentInfo?.email);
+        await _storage.write(key: "id", value: userModelCurrentInfo?.id);
         Fluttertoast.showToast(msg: "Account has been Created.");
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => MySplashScreen()));

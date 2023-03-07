@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ridee/AllScreens/LoginScreen.dart';
 import 'package:ridee/AllScreens/SplashScreen.dart';
 import 'package:ridee/AllScreens/searchScreen.dart';
@@ -13,6 +14,7 @@ import '../Helpers/assistantMethods.dart';
 class DrawerWidget extends StatelessWidget {
   final String? name;
   final String? phone;
+  final _storage = const FlutterSecureStorage();
 
   const DrawerWidget({Key? key, required this.name, required this.phone})
       : super(key: key);
@@ -131,15 +133,16 @@ class DrawerWidget extends StatelessWidget {
               leading: Icon(Icons.exit_to_app),
               title: Text('Log Out'),
               onTap: () {
-                var res = OnPremMethods.premLoginOut(userModelCurrentInfo!.phone!);
-                  if (res != 404) {
-                    userModelCurrentInfo = UserModel();
-                    fAuth.signOut();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (c) => LoginScreen()));
-                  }
+                _storage.deleteAll();
+                var res =
+                    OnPremMethods.premLoginOut(userModelCurrentInfo!.phone!);
+                if (res != 404) {
+                  userModelCurrentInfo = UserModel();
+
+                  fAuth.signOut();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => LoginScreen()));
+                }
               },
             ),
           ],
