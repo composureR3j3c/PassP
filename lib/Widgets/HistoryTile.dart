@@ -3,24 +3,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ridee/Globals/Global.dart';
 import 'package:ridee/Models/address.dart';
-import 'package:ridee/Models/placePrediction.dart';
+import 'package:ridee/Models/historyPredictions.dart';
 import 'package:ridee/Provider/appdata.dart';
 
-class PredictionTile extends StatefulWidget {
-  final PlacePredictions placePredictions;
-  PredictionTile({required this.placePredictions});
+class HistoryTile extends StatefulWidget {
+  final HistoryPredictions historyPredictions;
+  HistoryTile({required this.historyPredictions});
 
   @override
-  State<PredictionTile> createState() => _PredictionTileState();
+  State<HistoryTile> createState() => _PredictionTileState();
 }
 
-class _PredictionTileState extends State<PredictionTile> {
+class _PredictionTileState extends State<HistoryTile> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        setDropOff(widget.placePredictions, context);
-      },
+      onPressed: () {},
       child: Container(
         padding: EdgeInsets.all(10.0),
         child: Column(
@@ -37,7 +35,7 @@ class _PredictionTileState extends State<PredictionTile> {
                   width: 15.0,
                 ),
                 Icon(
-                  Icons.abc,
+                  Icons.history,
                   color: Colors.red,
                   size: 20,
                 ),
@@ -53,7 +51,7 @@ class _PredictionTileState extends State<PredictionTile> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.placePredictions.mainText ?? "",
+                        widget.historyPredictions.mainText ?? "",
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
                         style: GoogleFonts.lato(
@@ -69,7 +67,7 @@ class _PredictionTileState extends State<PredictionTile> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.placePredictions.secondaryText ?? "",
+                        widget.historyPredictions.secondaryText ?? "",
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
                         style: GoogleFonts.roboto(
@@ -93,28 +91,5 @@ class _PredictionTileState extends State<PredictionTile> {
         ),
       ),
     );
-  }
-
-  void setDropOff(PlacePredictions placePredictions, BuildContext context) {
-    Address address = Address();
-    address.latitude = placePredictions.lat as double?;
-    address.longitude = placePredictions.lon as double?;
-    address.placeName = placePredictions.mainText;
-
-    if (finalDropdownValue == "pickUp") {
-      Provider.of<AppData>(context, listen: false)
-          .updatePickUpLocationAddress(address);
-    } else {
-      Provider.of<AppData>(context, listen: false)
-          .updateDropOffLocation(address);
-    }
-
-    print("#####drop off/pick up #####");
-    print(address.latitude);
-
-    setState(() {
-      userDropOffAddress = placePredictions.mainText!;
-    });
-    Navigator.pop(context, "obtainDirection");
   }
 }

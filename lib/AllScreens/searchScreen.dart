@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:ridee/Globals/Global.dart';
 import 'package:ridee/Helpers/callApi.dart';
 import 'package:ridee/Models/placePrediction.dart';
 import 'package:ridee/Widgets/Divider.dart';
@@ -102,6 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextField(
+                            onChanged: (val) => findPlace(val, "pickUp"),
                             controller: pickUpTextEditingController,
                             decoration: InputDecoration(
                               hintText: "Pickup Loction",
@@ -141,7 +143,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextField(
-                            onChanged: (val) => findPlace(val),
+                            onChanged: (val) => findPlace(val, "dropOff"),
                             controller: dropOffTextEditingController,
                             decoration: InputDecoration(
                               hintText: "Where To?",
@@ -183,7 +185,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  void findPlace(String Placename) async {
+  void findPlace(String Placename, String addTyp) async {
     if (Placename.length > 1) {
       String apiUrl =
           "https://api.geoapify.com/v1/geocode/autocomplete?text=$Placename&format=json&filter=countrycode:et&circle:-38.763611,9.005401,1&apiKey=$geopify";
@@ -200,6 +202,7 @@ class _SearchScreenState extends State<SearchScreen> {
             .map((e) => PlacePredictions.fromJson(e))
             .toList();
         setState(() {
+          finaladdTyp = addTyp;
           placesPredictionList = placeList;
         });
       }

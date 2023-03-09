@@ -5,8 +5,14 @@ class PlacePredictions {
   double? lat;
   double? lon;
 
-  PlacePredictions(
-      {this.secondaryText, this.mainText, this.placeId, this.lat, this.lon});
+  PlacePredictions({
+    this.secondaryText,
+    this.mainText,
+    this.placeId,
+    this.lat,
+    this.lon,
+  });
+
   PlacePredictions.fromJson(Map<String, dynamic> json) {
     placeId = json["place_id"];
     mainText = json["address_line1"];

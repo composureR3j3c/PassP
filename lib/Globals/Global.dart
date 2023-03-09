@@ -23,3 +23,5 @@ String? finalDropdownValue;
 String? carTypeFinal = "econ";
 
 DateTime? orderTime;
+
+String? finaladdTyp;
