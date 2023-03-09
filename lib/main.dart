@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:ridee/AllScreens/SplashScreen.dart';
 import 'package:ridee/AllScreens/mainScreen.dart';
 import 'package:ridee/AllScreens/mapSample.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:ridee/Provider/appdata.dart';
 
 void main() async {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Roboto',
         ),
         // home: MapSample(),
-        home: const MySplashScreen(),
+        home: UpgradeAlert(child: MySplashScreen()),
         debugShowCheckedModeBanner: false,
       ),
     );

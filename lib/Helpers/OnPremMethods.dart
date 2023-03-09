@@ -232,4 +232,27 @@ class OnPremMethods {
       return e;
     }
   }
+
+  static Future<dynamic> getHistory(String id) async {
+    String url = "$premUrl/ride-app/history?id=$id";
+    String key =
+        "Qq87PGWPscPQfzlCz4ralI7JtrGcZ6ymYxjGxxHOmTKsBPCxXxSDlZr5jjidQzi117kdaCggXtw8HQ9fS2CEsMdavclyeO4uN4D1Ymm4OTnzlGPeFFT5PPN1JEPWSS7w";
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': key,
+    };
+    try {
+      http.Response httpResponse = await http.get(
+        Uri.parse(url),
+        headers: header,
+      );
+      if (httpResponse.statusCode == 200) {
+        return (httpResponse.body);
+      } else {
+        return 404;
+      }
+    } catch (e) {
+      return e;
+    }
+  }
 }

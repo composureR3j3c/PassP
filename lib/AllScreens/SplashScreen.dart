@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Globals/Global.dart';
-import '../Helpers/assistantMethods.dart';
 import 'LoginScreen.dart';
 import 'mainScreen.dart';
 
@@ -21,7 +20,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       var logdName = await _storage.read(key: "name");
       if (userModelCurrentInfo?.id != null) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (c) => MainScreen()));
+            context, MaterialPageRoute(builder: (c) => const MainScreen()));
       } else if (logdName != null) {
         userModelCurrentInfo?.name = await _storage.read(key: "name");
         userModelCurrentInfo?.lname = await _storage.read(key: "lname");
@@ -58,11 +57,18 @@ class _MySplashScreenState extends State<MySplashScreen> {
               Text(
                 "One Taxi",
                 style: GoogleFonts.pacifico(
-                    textStyle: TextStyle(
-                  color: Colors.red,
-                  fontSize: 48,
-                  fontWeight: FontWeight.w900,
-                )),
+                  textStyle: TextStyle(
+                      color: Colors.red,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w900,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 16,
+                          color: Colors.black54,
+                          offset: Offset(0.6, 0.6),
+                        )
+                      ]),
+                ),
               ),
             ],
           ),

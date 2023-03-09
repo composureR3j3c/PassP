@@ -37,7 +37,7 @@ class _PredictionTileState extends State<PredictionTile> {
                   width: 15.0,
                 ),
                 Icon(
-                  Icons.add_location_alt_outlined,
+                  Icons.abc,
                   color: Colors.red,
                   size: 20,
                 ),
