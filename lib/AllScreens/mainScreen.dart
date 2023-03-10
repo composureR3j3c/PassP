@@ -136,13 +136,17 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         });
 
         while (userRideRequestStatus == "accepted" ||
-            userRideRequestStatus == "statrted") {
+            userRideRequestStatus == "statrted" ||
+            userRideRequestStatus == "driver arrived") {
           var response = await OnPremMethods.getTripDetail(currTripId!);
           setState(() {
             userRideRequestStatus = driverRideStatus = response["tripStatus"];
           });
           var duration = const Duration(seconds: 5);
           print('Start sleeping');
+
+          //started, arrived, ended, cancelled
+
           sleep(duration);
           print('5 seconds has passed');
           if (userRideRequestStatus == "statrted" &&

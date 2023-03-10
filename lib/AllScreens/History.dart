@@ -16,6 +16,13 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History> {
   List<HistoryPredictions> historyList = [];
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetcHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,12 +79,12 @@ class _HistoryState extends State<History> {
                                 width: 10.0,
                               ),
                               Text(
-                                "Load History",
+                                "Reload",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21.0,
-                                ),
+                                    color: Colors.white,
+                                    fontSize: 21.0,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ]),
                       ),
