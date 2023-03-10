@@ -247,7 +247,7 @@ class OnPremMethods {
         headers: header,
       );
       if (httpResponse.statusCode == 200) {
-        return (httpResponse.body);
+        return jsonDecode(httpResponse.body);
       } else {
         return 404;
       }

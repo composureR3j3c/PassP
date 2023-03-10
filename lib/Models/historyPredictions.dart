@@ -19,8 +19,8 @@ class HistoryPredictions {
   HistoryPredictions.fromJson(Map<String, dynamic> json) {
     // placeId = json["place_id"];
     date = json["datetime"];
-    mainText = json["tripDetail"]["to"]["name"];
-    secondaryText = json["tripDetail"]["from"]["name"];
+    secondaryText = json["tripDetail"]["to"]["name"];
+    mainText = json["tripDetail"]["from"]["name"];
 
     // placename = json["placename"];
     status = json["tripStatus"];

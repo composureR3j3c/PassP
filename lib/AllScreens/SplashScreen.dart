@@ -27,6 +27,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
         userModelCurrentInfo?.id = await _storage.read(key: "id");
         userModelCurrentInfo?.phone = await _storage.read(key: "phone");
         userModelCurrentInfo?.email = await _storage.read(key: "email");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const MainScreen()));
       } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => LoginScreen()));

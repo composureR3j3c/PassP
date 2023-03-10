@@ -19,74 +19,94 @@ class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        GestureDetector(
-          onTap: () async {
-            fetcHistory();
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black45,
-                    blurRadius: 6.0,
-                    spreadRadius: 0.4,
-                    offset: Offset(1, 1),
-                  )
-                ]),
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(children: [
-                SizedBox(
-                  width: 10.0,
-                ),
-                Icon(Icons.replay_outlined, color: Colors.white, size: 35),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Refresh",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 21.0,
+        body: AnimatedSize(
+      curve: Curves.bounceIn,
+      duration: const Duration(milliseconds: 10),
+      child: Container(
+        height: double.infinity,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 50.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GestureDetector(
+                onTap: () async {
+                  fetcHistory();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        bottomLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45,
+                          blurRadius: 6.0,
+                          spreadRadius: 0.4,
+                          offset: Offset(1, 1),
+                        )
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 23.0, vertical: 17.5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Center(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Icon(Icons.replay_outlined,
+                                  color: Colors.white, size: 35),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                "Load History",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21.0,
+                                ),
+                              ),
+                            ]),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 10.0,
-                ),
-              ]),
+              ),
             ),
-          ),
+            (historyList.length > 0)
+                ? Expanded(
+                    child: ListView.separated(
+                      itemBuilder: (context, index) => HistoryTile(
+                        historyPredictions: historyList[index],
+                      ),
+                      separatorBuilder: (BuildContext context, int Index) =>
+                          DividerWidget(),
+                      itemCount: historyList.length,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                    ),
+                  )
+                : Container(
+                    child: Center(
+                      child: const Text("No History Yet"),
+                    ),
+                  )
+          ],
         ),
-        (historyList.length > 0)
-            ? Expanded(
-                child: ListView.separated(
-                  itemBuilder: (context, index) => HistoryTile(
-                    historyPredictions: historyList[index],
-                  ),
-                  separatorBuilder: (BuildContext context, int Index) =>
-                      DividerWidget(),
-                  itemCount: historyList.length,
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                ),
-              )
-            : Container(
-                child: Center(
-                  child: const Text("No History Yet"),
-                ),
-              )
-      ],
+      ),
     ));
   }
 
@@ -97,8 +117,8 @@ class _HistoryState extends State<History> {
     } else
     // if (res["status"] == "OK")
     {
-      print(res["results"]);
-      var predictions = res["results"];
+      print(res.toString());
+      var predictions = res;
       var placeList = (predictions as List)
           .map((e) => HistoryPredictions.fromJson(e))
           .toList();

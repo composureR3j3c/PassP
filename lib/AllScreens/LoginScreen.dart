@@ -48,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (response != 404) {
+      print(response.toString());
       userModelCurrentInfo?.name = response["profile"]["fname"];
       userModelCurrentInfo?.lname = response["profile"]["lname"];
       userModelCurrentInfo?.phone = response["profile"]["phone"];
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     } else {
-      Fluttertoast.showToast(msg: "No record exist with this email.");
+      Fluttertoast.showToast(msg: "No record exist with this email or phone.");
       fAuth.signOut();
       Navigator.pop(context);
     }

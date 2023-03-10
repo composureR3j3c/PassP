@@ -8,6 +8,7 @@ import 'package:ridee/Globals/Global.dart';
 import 'package:ridee/Helpers/OnPremMethods.dart';
 import 'package:ridee/Helpers/sendMail.dart';
 import 'package:ridee/Models/Users.dart';
+import 'package:ridee/AllScreens/History.dart';
 
 import '../Helpers/assistantMethods.dart';
 
@@ -78,6 +79,8 @@ class DrawerWidget extends StatelessWidget {
               leading: Icon(Icons.history),
               title: Text('History'),
               onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (c) => History()));
                 // Navigator.pushReplacementNamed(context, '/');
               },
             ),
