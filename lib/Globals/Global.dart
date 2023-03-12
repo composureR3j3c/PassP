@@ -13,6 +13,7 @@ String userDropOffAddress = "";
 String driverCarDetails = "";
 String driverName = "";
 String driverPhone = "";
+String driverPlate="";
 String premUrl = "https://rideapi.gubanet.com";
 
 DateTime? preorderTime;
@@ -25,3 +26,5 @@ String? carTypeFinal = "econ";
 DateTime? orderTime;
 
 String? finaladdTyp;
+
+String cancelReason ="Accedental request";

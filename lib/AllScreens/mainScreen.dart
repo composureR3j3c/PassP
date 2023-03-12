@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:provider/provider.dart';
+import 'package:ridee/AllScreens/CancelScreen.dart';
 import 'package:ridee/AllScreens/searchScreen.dart';
 import 'package:ridee/Globals/Global.dart';
 import 'package:ridee/Helpers/assistantMethods.dart';
@@ -127,6 +128,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         driverCarDetails = response["driver"]["carDetails"]["carBrand"];
         driverPhone = response["driver"]["phone"];
         driverName = response["driver"]["name"];
+        driverPlate = response["driver"]["carDetails"]["plateNo"];
         int driverDistance = (response["driver"]["driverDistance"]).truncate();
         userRideRequestStatus = "accepted";
         setState(() {
@@ -806,6 +808,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   GestureDetector(
                     onTap: () {
                       setState(() {
+                        showCancelDialog(context);
                         displaySearch();
                       });
                     },
@@ -890,14 +893,30 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     ),
 
                     //driver name
+                    Row(
+                      children: [
+                        Text(
+                          driverName,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white54,
+                          ),
+                        ),
+                        const SizedBox(
+                      height: 20.0,
+                    ),
                     Text(
-                      driverName,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white54,
-                      ),
+                          driverPlate,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white54,
+                          ),
+                        ),
+                      ],
                     ),
 
                     const SizedBox(
@@ -944,6 +963,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     Center(
                       child: ElevatedButton.icon(
                         onPressed: () {
+                          showCancelDialog(context);
                           displaySearch();
                         },
                         style: ElevatedButton.styleFrom(
